@@ -1,5 +1,9 @@
 data/activities/*
 data/maptiles/*
+# but do not ignore the dummy .gitkeep file, so the otherwise empty folder can be added to the repo
+!data/activities/.gitkeep 
+!data/maptiles/.gitkeep 
+
 docs/temp
 
 # Byte-compiled / optimized / DLL files
