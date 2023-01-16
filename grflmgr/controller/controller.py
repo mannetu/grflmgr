@@ -13,7 +13,7 @@ class Controller:
 
     def import_folder(self, foldername: pathlib.Path = None):
         if foldername == None:
-            foldername = pathlib.Path(config["FILEPATH"]["ImportPath"])
+            foldername = pathlib.Path(pathlib.Path.home(), config["FILEPATH"]["ImportFolder"])
         try:
             self.model.fileimporter().import_folder(
                 foldername, self.import_folder_cb)

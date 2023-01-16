@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from tkintermapview import TkinterMapView
+import logging
 import configparser
 import pathlib
-from datetime import datetime
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -208,13 +208,15 @@ class View(ttk.Frame):
         self._make_map()
 
     def _make_map(self):
+        pathlib.Path(pathlib.Path.home(), config['FILEPATH']['Database']).mkdir(parents=True, exist_ok=True)
+        tilesdb_path = pathlib.Path(pathlib.Path.home(), config['FILEPATH']['Database'],'offline_tiles.db')
+        
         self.map_widget = TkinterMapView(
             self.map_frame,
             width=int(config["MAP"]["MapWidth"]),
             height=int(config["MAP"]["MapHeight"]),
             corner_radius=0,
-            database_path=pathlib.Path(
-                config["FILEPATH"]["MapDatabase"]).absolute().as_posix()
+            database_path=tilesdb_path.absolute().as_posix()
         )
         self.map_widget.pack(fill=tk.BOTH, expand=tk.TRUE)
 

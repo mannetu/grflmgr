@@ -15,11 +15,12 @@ south_east_map_corner = (49.8087210, 9.0154272)
 zoom_min = 0
 zoom_max = 16
 
-# specify path and name of the database
-database_path = pathlib.Path(config["FILEPATH"]["MapDatabase"]).absolute().as_posix()
+# create path to database if not existing
+pathlib.Path(pathlib.Path.home(), config['FILEPATH']['Database']).mkdir(parents=True, exist_ok=True)
+tilesdb_path = pathlib.Path(pathlib.Path.home(), config['FILEPATH']['Database'],'offline_tiles.db')
 
 # create OfflineLoader instance
-loader = tkintermapview.OfflineLoader(path=database_path)
+loader = tkintermapview.OfflineLoader(path=tilesdb_path.absolute().as_posix())
 
 # save the tiles to the database, an existing database will extended
 loader.save_offline_tiles(north_west_map_corner, south_east_map_corner, zoom_min, zoom_max)
