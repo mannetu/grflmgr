@@ -1,9 +1,8 @@
 # grflmgr
-Version 0.2 
+Version 0.3 
 
 ## Change Log
-* Filepaths in config.ini based on user's home directory
-* Database directory is automatically created if not yet existing
+* Data is stored in SQLite database
 
 ## Install
     git clone https://www.github.com/mannetu/grflmgr

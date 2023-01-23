@@ -36,7 +36,7 @@ class Controller:
 
     def update_ride_list(self):
         self.view.clear_ridelist()
-        for activity in self.model.database.db:
+        for activity in self.model.query.get_ridelist():
             self.view.insert_ridelist(activity)
         logging.debug(
             f"Updated ride list: {self.view.tree.get_children()}\n"
@@ -48,26 +48,23 @@ class Controller:
     def set_filter_fav(self, state: bool):
         logging.debug(f"Filter Fav: {state}")
 
-    def show_tracks(self, rides):
-        if len(rides) == 0:
+    def show_tracks(self, ride_ids):
+        if len(ride_ids) == 0:
             return
+
         tracks = []
-        max_positions = []
-        for ride in rides:
-            tracks.append(self.model.database.get_track(ride))
-
-            nw, se = self.model.database.get_map_zoom(ride)
-            max_positions.append(nw)
-            max_positions.append(se)
-
         lats = []
-        longs = []
-        for position in max_positions:
-            lats.append(position[0])
-            longs.append(position[1])
-        corner_nw = (max(lats), min(longs))
-        corner_se = (min(lats), max(longs))
+        lons = []
+        for ride_id in ride_ids:
+            tracks.append(self.model.query.get_track(ride_id))
+            nwc_lat, nwc_lon, sec_lat, sec_lon = self.model.query.get_map_borders(ride_id)
+            lats.append(nwc_lat)
+            lats.append(sec_lat)
+            lons.append(nwc_lon)
+            lons.append(sec_lon)
+        nw_corner = (max(lats), min(lons))
+        se_corner = (min(lats), max(lons))
 
-        self.view.set_map_zoom(corner_nw, corner_se)
+        self.view.set_map_zoom(nw_corner, se_corner)
         self.view.show_tracks(tracks)
-        logging.debug(f"Showing tracks {rides}")
+        logging.debug(f"Showing tracks {ride_ids}")

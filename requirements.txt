@@ -1,3 +1,4 @@
 tkintermapview
 fitparse
 gpxpy
+sqlalchemy

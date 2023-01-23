@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 import configparser
 import logging
 import os
@@ -9,7 +8,7 @@ from controller import Controller
 from view import View
 
 
-VERSION = '0.1'
+VERSION = '0.3'
 
 config = configparser.ConfigParser()
 config.read("config.ini")

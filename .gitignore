@@ -1,7 +1,3 @@
-data/activities/*
-data/maptiles/*
-docs/temp
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

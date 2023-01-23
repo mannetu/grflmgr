@@ -1,9 +1,8 @@
+import configparser
+import pathlib
 import tkinter as tk
 from tkinter import ttk
 from tkintermapview import TkinterMapView
-import logging
-import configparser
-import pathlib
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -146,7 +145,7 @@ class View(ttk.Frame):
         )
         self.ride_list.columnconfigure(0, weight=1)
 
-        columns = ("ride_name", "ride_date", "ride_distance")
+        columns = ("ride_id", "ride_date", "ride_distance")
         self.tree = ttk.Treeview(
             self.ride_list, columns=columns, height=30, show="headings"
         )
@@ -154,8 +153,8 @@ class View(ttk.Frame):
         self.tree.grid(column=0, row=1, sticky=tk.NSEW)
 
         # define headings
-        self.tree.column("ride_name", anchor=tk.W, width=200, stretch=tk.YES)
-        self.tree.heading("ride_name", text="Name", anchor=tk.W)
+        self.tree.column("ride_id", anchor=tk.W, width=200, stretch=tk.YES)
+        self.tree.heading("ride_id", text="ID", anchor=tk.W)
         self.tree.column("ride_date", anchor=tk.CENTER, width=60, stretch=tk.YES)
         self.tree.heading("ride_date", text="Date", anchor=tk.CENTER)
         self.tree.column("ride_distance", anchor=tk.CENTER,
@@ -188,11 +187,11 @@ class View(ttk.Frame):
         self.tree.insert(
             "",
             tk.END,
-            iid=ride._filehash,
+            iid=ride.id,
             values=(
-                ride._filehash,
-                ride._session["timestamp"].strftime("%d.%m.%y"),
-                round((ride._session["total_distance"] / 1000),1),
+                ride.id,
+                ride.start_time.strftime("%d.%m.%y"),
+                round((ride.total_distance / 1000),1),
             ),
         )
 
@@ -208,8 +207,9 @@ class View(ttk.Frame):
         self._make_map()
 
     def _make_map(self):
-        pathlib.Path(pathlib.Path.home(), config['FILEPATH']['Database']).mkdir(parents=True, exist_ok=True)
-        tilesdb_path = pathlib.Path(pathlib.Path.home(), config['FILEPATH']['Database'],'offline_tiles.db')
+        path = config['FILEPATH']['Database']
+        pathlib.Path(pathlib.Path.home(), path).mkdir(parents=True, exist_ok=True)
+        tilesdb_path = pathlib.Path(pathlib.Path.home(), path, 'offline_tiles.db')
         
         self.map_widget = TkinterMapView(
             self.map_frame,

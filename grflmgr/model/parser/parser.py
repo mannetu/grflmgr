@@ -1,4 +1,4 @@
-from ..activity import Activity
+from collections import namedtuple
 
 
 class ParserFactory:
@@ -28,10 +28,12 @@ class Parser:
         self.track_data: list = []
 
         self._raw_content = None
-        self._activity = Activity()
 
-    def get_activity(self) -> Activity:
-        self._activity = Activity(
-            device=self.device_data, session=self.session_data, track=self.track_data
-        )
-        return self._activity
+    def get_data(self):
+        ParserData = namedtuple(
+            'ParserData', ['device', 'act_session', 'ptrack'])
+        parser_data = ParserData(
+            self.device_data, self.session_data, self.track_data)
+        return parser_data
+
+
