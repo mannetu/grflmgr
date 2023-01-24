@@ -1,6 +1,6 @@
 import configparser
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import Integer, Float, String, DateTime
+from sqlalchemy import Integer, Float, String, DateTime, Interval
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 
 
@@ -54,8 +54,8 @@ class Record(Base):
     total_ascent = Column(Integer)  # 2422
     total_descent = Column(Integer)  # 2240
     total_distance = Column(Float)  # 136572.73
-    total_timer_time = Column(Float)  # 35859.0
-    total_elapsed_time = Column(Float)  # 54105.0
+    total_timer_time = Column(Interval)  # datetime.timedelta
+    total_elapsed_time = Column(Interval)  # datetime.timedelta
     total_calories = Column(Integer)  # 6619
 
     def __repr__(self):

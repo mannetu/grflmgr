@@ -141,11 +141,11 @@ class View(ttk.Frame):
         # ride table
         self.ride_list = ttk.Frame(self.list_frame)
         self.ride_list.grid(
-            column=0, columnspan=4, row=1, padx=self.PAD, pady=self.PAD, sticky=tk.NSEW
+            column=0, columnspan=5, row=1, padx=self.PAD, pady=self.PAD, sticky=tk.NSEW
         )
         self.ride_list.columnconfigure(0, weight=1)
 
-        columns = ("ride_id", "ride_date", "ride_distance")
+        columns = ("ride_id", "ride_date", "ride_distance", "ride_timer_time")
         self.tree = ttk.Treeview(
             self.ride_list, columns=columns, height=30, show="headings"
         )
@@ -153,20 +153,24 @@ class View(ttk.Frame):
         self.tree.grid(column=0, row=1, sticky=tk.NSEW)
 
         # define headings
-        self.tree.column("ride_id", anchor=tk.W, width=200, stretch=tk.YES)
-        self.tree.heading("ride_id", text="ID", anchor=tk.W)
-        self.tree.column("ride_date", anchor=tk.CENTER, width=60, stretch=tk.YES)
-        self.tree.heading("ride_date", text="Date", anchor=tk.CENTER)
-        self.tree.column("ride_distance", anchor=tk.CENTER,
-                         width=60, stretch=tk.YES)
-        self.tree.heading("ride_distance", text="Dist [km]", anchor=tk.CENTER)
+        self.tree.column("ride_id", anchor=tk.E, width=10, stretch=tk.YES)
+        self.tree.heading("ride_id", text="ID", anchor=tk.E)
+        self.tree.column("ride_date", anchor=tk.E, width=40, stretch=tk.YES)
+        self.tree.heading("ride_date", text="Date", anchor=tk.E)
+        self.tree.column("ride_distance", anchor=tk.E,
+                         width=30, stretch=tk.YES)
+        self.tree.heading("ride_distance", text="[km]", anchor=tk.E)
+        self.tree.column("ride_timer_time", anchor=tk.E,
+                         width=30, stretch=tk.YES)
+        self.tree.heading("ride_timer_time", text="[h:m]", anchor=tk.E)
+
 
         # add a scrollbar
         self.scrollbar = ttk.Scrollbar(
             self.ride_list, orient=tk.VERTICAL, command=self.tree.yview
         )
         self.tree.configure(yscroll=self.scrollbar.set)
-        self.scrollbar.grid(row=1, column=3, sticky=tk.NS)
+        self.scrollbar.grid(row=1, column=4, sticky=tk.NS)
 
         # selection handler
         def item_selected(event):
@@ -192,6 +196,7 @@ class View(ttk.Frame):
                 ride.id,
                 ride.start_time.strftime("%d.%m.%y"),
                 round((ride.total_distance / 1000),1),
+                str(ride.total_timer_time)[:-3],
             ),
         )
 

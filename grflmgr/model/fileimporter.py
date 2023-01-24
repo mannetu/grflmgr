@@ -5,7 +5,7 @@ import hashlib
 from collections import deque
 import threading
 from sqlalchemy import inspect, select
-from datetime import datetime
+from datetime import datetime, timedelta
 import pprint as pp
 
 import fitparse
@@ -168,8 +168,8 @@ class FileImporter():
             total_ascent=p_data.act_session.get('total_ascent', None),
             total_descent=p_data.act_session.get('total_descent', None),
             total_distance=p_data.act_session.get('total_distance', None),
-            total_timer_time=p_data.act_session.get('total_timer_time', None),
-            total_elapsed_time=p_data.act_session.get('total_elapsed_time', None),
+            total_timer_time=chop_microseconds(timedelta(seconds=p_data.act_session.get('total_timer_time', None))),
+            total_elapsed_time=chop_microseconds(timedelta(seconds=p_data.act_session.get('total_elapsed_time', None))),
             total_calories=p_data.act_session.get('total_calories', None)
         )
 
@@ -201,3 +201,9 @@ def get_map_corners(trpoints) -> tuple:
     sec_lat = min(lats)
     sec_lon = max(longs)
     return (nwc_lat, nwc_lon, sec_lat, sec_lon)
+
+
+# helper function
+def chop_microseconds(delta):
+    chopped_delta = delta - timedelta(microseconds=delta.microseconds)
+    return chopped_delta

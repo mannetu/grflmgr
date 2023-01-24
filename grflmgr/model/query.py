@@ -8,7 +8,7 @@ class RecordQuery:
         self.db_session = db_session
 
     def get_ridelist(self):
-        stmt = select(Record.id, Record.start_time, Record.total_distance).order_by(
+        stmt = select(Record.id, Record.start_time, Record.total_distance, Record.total_timer_time).order_by(
             Record.start_time.desc())
         with self.db_session() as s:
             result = s.execute(stmt).all()
