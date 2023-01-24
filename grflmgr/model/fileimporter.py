@@ -169,7 +169,7 @@ class FileImporter():
             total_descent=p_data.act_session.get('total_descent', None),
             total_distance=p_data.act_session.get('total_distance', None),
             total_timer_time=p_data.act_session.get('total_timer_time', None),
-            total_elapsed_time=p_data.act_session.get('total_elapsed_tim', None),
+            total_elapsed_time=p_data.act_session.get('total_elapsed_time', None),
             total_calories=p_data.act_session.get('total_calories', None)
         )
 
